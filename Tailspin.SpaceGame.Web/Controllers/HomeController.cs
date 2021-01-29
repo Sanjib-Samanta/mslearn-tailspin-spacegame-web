@@ -27,7 +27,7 @@ namespace TailSpin.SpaceGame.Web.Controllers
             _profileRespository = profileRespository;
         }
 
-       // [Authorize]
+        [Authorize]
         public async Task<IActionResult> Index(
             int page = 1, 
             int pageSize = 10, 
