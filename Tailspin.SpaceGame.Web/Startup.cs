@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TailSpin.SpaceGame.Web.Models;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TailSpin.SpaceGame.Web
 {
@@ -26,6 +26,13 @@ namespace TailSpin.SpaceGame.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.Audience = Configuration["AAD:ResourceId"];
+                    opt.Authority = $"{Configuration["AAD:InstanceId"]}{Configuration["AAD:TenantId"]}";
+                    opt.RequireHttpsMetadata = false;
+                });
             services.AddControllersWithViews();
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -56,7 +63,7 @@ namespace TailSpin.SpaceGame.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

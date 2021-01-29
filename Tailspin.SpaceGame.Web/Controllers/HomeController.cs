@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TailSpin.SpaceGame.Web.Models;
 
@@ -16,6 +17,7 @@ namespace TailSpin.SpaceGame.Web.Controllers
         // User profile repository.
         private readonly IDocumentDBRepository<Profile> _profileRespository;
 
+        
         public HomeController(
             IDocumentDBRepository<Score> scoreRepository,
             IDocumentDBRepository<Profile> profileRespository
@@ -25,6 +27,7 @@ namespace TailSpin.SpaceGame.Web.Controllers
             _profileRespository = profileRespository;
         }
 
+       // [Authorize]
         public async Task<IActionResult> Index(
             int page = 1, 
             int pageSize = 10, 
